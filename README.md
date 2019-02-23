@@ -1,2 +1,2 @@
-# practice-git-submission-assignment-raulmori
+# My tiny repository
 hello embedded
