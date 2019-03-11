@@ -42,7 +42,7 @@ begin
     --need to count to 6.25 million
     --at the sample rate of 125MHZ, using this number of counts will give 50ms debounce time
         if(unsigned(counter) < 6250000) then --sherif said to use 50ms
-        --while less than 2.5 million output 0. This is within the period where the oscillation button interferance is happening
+        --while less than 6.25 million output 0. This is within the period where the oscillation button interferance is happening
         dbnc <= '0'; --as long as the signal is oscillating the output wont be counted
            if(sft_Reg(1) = '1' ) then 
            --if bit 1 is high, add to counter
