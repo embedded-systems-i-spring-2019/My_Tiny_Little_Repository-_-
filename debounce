@@ -23,8 +23,8 @@ end debounce;
 architecture DB of debounce is
 
 
---use 22 bits to be able to count to 2.5 million 
-  signal counter: std_logic_vector (21 downto 0) := (others => '0');
+--use 26 bits to be able to count to 6.25 million 
+  signal counter: std_logic_vector (25 downto 0) := (others => '0');
   --create 2 bit long shift register
   signal sft_Reg: std_logic_vector(1 downto 0);
 begin
@@ -39,7 +39,7 @@ begin
     --bit 0 gets value from button
     sft_Reg(0) <= btn;
     
-    --need to count to 2.5 million
+    --need to count to 6.25 million
     --at the sample rate of 125MHZ, using this number of counts will give 50ms debounce time
         if(unsigned(counter) < 6250000) then --sherif said to use 50ms
         --while less than 2.5 million output 0. This is within the period where the oscillation button interferance is happening
