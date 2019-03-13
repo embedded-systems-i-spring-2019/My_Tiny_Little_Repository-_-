@@ -31,50 +31,54 @@ begin
         
         --unless en = '1' do nothing
         if(en = '1') then
-        --on the clock rising edge and rst is asserted reset count
+        
+        --on the clock rising (while clock_en is "0" ) edge and rst is asserted once there is a rising edge, and counter resets aswell
             if(rising_edge(clk)) then
-                if(rst = '1') then
-                counter <= (others => '0');
+                if (rst = '1') then              --This just resets the system which will make the output give a "0"
+                counter <= (others => '0');     --This resets the counter, which will automatically output a "0" in 4-bit form
                 --this sets output to 0
-                cnt <= counter;
-                --beside rst, unless clk_en is '1' nothing can be implemented
-                elsif(clk_en = '1') then
-                --if clk_en is 1 and ld is 1
-                --the value at "val" will be loaded in to value register
+                cnt <= counter;      -this just assigns the actual "0" value of the counter to the output
+                
+                --beside rst, (while clock_en is "1") clk_en and "en" have to be '1' for a change in anything to happen.
+                elsif (clk_en = '1') then
+                --if ld is 1
+                --the value at "val" will be LOADED in to value register
                     if(ld = '1') then
                     value <= val;
                     end if;
-                    --if clk_en = '1' and updn = '1'
-                    --change the direction of counting depending on dir value
-                    if(updn = '1') then
-                    direction <= dir;
+                    
+                    --Second case: if clk_en = '1' and updn = '1'
+                    --change counting direction depending on dir value
+                    if(updn = '1') then         --this activates change of count
+                    direction <= dir;           --this changes counting direction
                     end if;
-                    --count up
+                    
+                    --COUNT UP depending on the value of "direction register". In this case it is counts up to number stored in value
+                    --this case happens as long as updn is "1"
                         if(direction = '1') then
-                        --it counts up to number stored in value
                            if(unsigned(counter) < unsigned(value)) then
                                counter <= std_logic_vector(unsigned(counter) + 1);
                                --once reached reset back to 0000
                                --set output to value in counter
                                 cnt <= counter;
                            else
-                               counter <= (others => '0');
+                               counter <= (others => '0');        --This just resets counter
                                --set output to value in counter
                                cnt <= counter;
                            end if;
-                        --if direction is '0'
-                        else
-                        --count down from current value in counter
+                           
+                        
+                        else          --if direction is '0'(as long as updn is "1")
+                        --COUNT DOWN from current value in counter
                             if(unsigned(counter) > "0000") then
-                                counter <= std_logic_vector(unsigned(counter) - 1);
-                                --set output to value in counter
-                                cnt <= counter;
-                            --if it reaches 0000 set to val    
+                                counter <= std_logic_vector(unsigned(counter) - 1);   --This is where the counter starts counting in reverse
+                                --puts the value of the counter on the output
+                                cnt <= counter;  
+                         --(if it doesn't meet the condition above) if it reaches 0000 set to val    
                             else
                             counter <= value;
-                            --set output to value in counter
-                            cnt <= counter;
-                            end if;
+                            cnt <= counter;      --puts the value of the counter on the output
+                            end if;              --Remember the loop goes back at every clock edge (count)
                         end if;
                  end if;
             end if;
