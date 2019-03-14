@@ -21,8 +21,8 @@ architecture Behavioral of fancy_counter is
 
 --need a 4 bit counter
 signal counter: std_logic_vector(3 downto 0) := (others => '0');    --This is the interchangeable value of the counter
-signal value: std_logic_vector(3 downto 0) := (others => '0');      --
-signal direction : std_logic := '0';
+signal value: std_logic_vector(3 downto 0) := (others => '0');      --interchangeable  "value"
+signal direction : std_logic := '0';                                --interchangeable  "direction"
 
 begin
 --begin process
@@ -32,10 +32,11 @@ begin
         --unless en = '1' do nothing
         if(en = '1') then
         
-        --on the clock rising (while clock_en is "0" ) edge and rst is asserted once there is a rising edge, and counter resets aswell
+        --(regardless of clock_en value ) if rst is asserted while on rising edge, the counter resets and the output "cnt" becomes a 4-bit "0"
+        --Remember the value of the counter and the out are the same and are also both 4-bits
             if(rising_edge(clk)) then
                 if (rst = '1') then              --This just resets the system which will make the output give a "0"
-                counter <= (others => '0');     --This resets the counter, which will automatically output a "0" in 4-bit form
+                counter <= (others => '0');     --This resets the counter, which will automatically put the 4-bit value of the counter into the output "cnt"
                 --this sets output to 0
                 cnt <= counter;      -this just assigns the actual "0" value of the counter to the output
                 
