@@ -1,4 +1,4 @@
---In this testbench we just simulate the clock
+--In this testbench we just simulate the clock. While  temporary "div" gets automtically outputed through the port
 
 library IEEE;
 use IEEE.std_logic_1164.all;
