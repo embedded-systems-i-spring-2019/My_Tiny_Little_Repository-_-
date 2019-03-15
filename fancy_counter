@@ -29,52 +29,54 @@ begin
     process(clk, clk_en)                  --Notice here that we have two clocks
         begin
         
-        --unless en = '1' do nothing
-        if(en = '1') then
         
-        --(clock_en is "0" ) if rst is asserted while on rising edge, the counter resets and the output "cnt" becomes a 4-bit "0"
-        --Remember the value of the counter and the out are the same and are also both 4-bits
-            if(rising_edge(clk)) then
-                if (rst = '1') then              --This just resets the system which will make the output give a "0"
-                counter <= (others => '0');     --This resets the counter, which will automatically make its 4-bit value be "0000"
-                cnt <= counter;                 --This puts the 4-bit temporary "counter" onto entitiy port "cnt"
-                
-                --(while  clock_en is "1") clk_en and "en" have to be '1' for a change in anything to happen.
-                elsif (clk_en = '1') then
+        if(en = '1') then --Remember changes only happen when "en=1", when clock_en is "0" nothing happens
+        
+                if(rising_edge(clk)) then          --Remember, After the above condition is met, anything will only happen on "rising_edge".  
+                        if (rst = '1') then              --If rst is asserted while every condition above is met, the counter resets.
+                        counter <= (others => '0');     --This resets the counter, which will automatically make its 4-bit value be "0000"
+                        cnt <= counter;                 --This puts the 4-bit temporary "counter" into entitiy port "cnt"
+                          
+                        elsif (clk_en = '1') then  --This is assuming the reset is "0" but an additional condition of "Clk_en=1" also has to be true.
+        --All the if's in this column will be executed. 
 
-                    if(ld = '1')   then      --if ld is 1  the value at "val" will be LOADED in to value register
-                    value <= val;       --Here we actually put the entity port "val" into the temporary 4-bit "value" so that we can move "val" later
-                    end if;
+                            if(updn = '1') then         --this JUST activates change in count direction
+                            direction <= dir;           --this puts entitiy port "dir" (which can be 0 or 1)into the temporary 4-bit "direction", so that we can use temporary "direction" later
+                            end if;
 
-                        --Second case: if en=1, clk_en = '1', ld=1, and updn = '1' change counting direction depending of dir value
-                        if(updn = '1') then         --this JUST activates change in count direction
-                        direction <= dir;           --this puts entitiy port "dir" (which can be 0 or 1)into the temporary 4-bit "direction", so that we can move "dir" later
-                        end if;
-                    
-                                if(direction = '1') then         --In this case it  "dir" decides whether to count up or down       
-                                       if(unsigned(counter) < unsigned(value)) then    --Check if "counter" is less than "value" 
-                                           counter <= std_logic_vector(unsigned(counter) + 1);    --adds 1 to the counter than saves it in the temporary "counter"
-                                            cnt <= counter;               --puts the temporary "counter" into the entity port "cnt". So that it can be printed out
-                                            
-                                       else                               --This is the case that the temporary "counter" is is more than the temporary "value" applied to the multiplexer 
-                                           counter <= (others => '0');    --This is will reset the temporary "counter" giving it a value of "0000"
-                                           cnt <= counter;                --puts the temporary "counter" into the entity port "cnt". So that it can be printed out
-                                       end if;
-                           
-                        
-                                else          --if direction is '0'(as long as updn is "1"). COUNT DOWN from current value in counter
-                                       if(unsigned(counter) > "0000") then
-                                          counter <= std_logic_vector(unsigned(counter) - 1);   --This is where the counter starts counting in reverse
-                                          cnt <= counter;    --puts the value of the counter on the output
-                         
+                            if(ld = '1')   then      --if LD is "1"  the value at "val" will be LOADED in to value register
+                                     value <= val;       --Here we actually put the entity port "val" into the temporary 4-bit "value" so that we can move "val" later
+                            end if; 
+                            
+                            if(direction = '1') then         --In this case we actually use the temporary "direction" valu      
+                                      if(unsigned(counter) < unsigned(value)) then    --Check if "counter" is less than temporary "value" 
+                                                       counter <= std_logic_vector(unsigned(counter) + 1);    --adds 1 to the counter than saves it in the temporary "counter"
+                                                        cnt <= counter;               --puts the temporary "counter" into the entity port "cnt". So that it can be printed out
+                                                        
+                                      else                               --This is the case that the temporary "counter" is is more than the temporary "value" applied to the multiplexer 
+                                                       counter <= (others => '0');    --This is will reset the temporary "counter" giving it a value of "0000"
+                                                       cnt <= counter;                --puts the temporary "counter" into the entity port "cnt". So that it can be printed out
+                                      end if;              --This ends the internal if/else condition
+                                   
+                                
+                             else          --if direction is '0'(as long as updn is "1"). COUNT DOWN from current value in counter
+                                       if(unsigned(counter) > "0000") then              --This is if the temporary counter is greater than "0"
+                                            counter <= std_logic_vector(unsigned(counter) - 1);   --This is where the counter starts counting down
+                                            cnt <= counter;    --puts the value of the counter on the output
+                                     
                                        else  --If the "counter" is actually 0000 , "val" is sent to "counter"   
-                                            counter <= value;
-                                            cnt <= counter;   --The temporary "counter" is put on the entity port "cnt", so it can be printed out   
-                            end if;              --Remember the loop goes back at every clock edge (count)
-                        end if;
-                 end if;
-            end if;
-      end if;
+                                             counter <= value;
+                                             cnt <= counter;   --The temporary "counter" is put on the entity port "cnt", so it can be printed out   
+                                       end if;              --Remember the loop goes back at every clock edge (count)                      
+                            end if;
+                            
+                            
+                             
+                        end if;  --This closes the  "elsif" condition
+                        
+               end if;  --This closes the second "if" condition
+               
+      end if;  --This closes the first "if" condition
                  
    end process;
 
