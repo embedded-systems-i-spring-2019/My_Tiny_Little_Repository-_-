@@ -36,15 +36,15 @@ end component;              --This are the new temporary values
 
 dut: fancy_counter port map     --create port map
 
-                            (clk => clk,
-                            clk_en => clk_en,
-                            en => en,
-                            dir => dir,
-                            ld => ld,
-                            rst => rst,
-                            updn => updn,
-                            val => val,
-                            cnt => cnt);
+      (clk => clk,
+      clk_en => clk_en,
+      en => en,
+      dir => dir,
+      ld => ld,
+      rst => rst,
+      updn => updn,
+      val => val,
+      cnt => cnt);
 
 
             process         --create 125MHZ clock
@@ -57,28 +57,24 @@ dut: fancy_counter port map     --create port map
                     
                       wait for 4 ns;    --set low for half  
                       clk <= '0';
-          
            end process;     --end clock process
 
   
   
             process     --run simulation process of the counter
-                begin
-                
-                --initial wait
-                wait for 5ms;
+                begin            
+                wait for 5ms;  --initial wait
           
-                --first lets try to break it
-                --unless en = '1' nothing will change the circuit
-                en <= '0';
+          --case #1 (nothing  happens)
+                en <= '0';  --first we try to break it, unless en = '1' nothing will change the circuit
                 clk_en <= '1';
                 dir <= '1';
                 ld <= '1';
-                val <= "1001";
+                val <= "1001";  --this is just a test entity "val"
                 updn <= '1';
                 rst <= '0';
-                wait for 10ms;
-                --so here, nothing should have happened
+                wait for 10ms;   --we give it an actual time out of 50ms
+           
                 
                 --even if en = '1' if clk_en is '0' only rst can change the circuit
                 en <= '1';
