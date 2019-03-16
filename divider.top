@@ -1,6 +1,7 @@
 --This is the First initial part where we simulate all the parts of an example simple entire circuit together.
 --Divider.top will help you understand how to do the last part where we actually bring all the components together.
 --This dummy-circuit is composed of an "inverter", a "clock" (the one we made), and a "D-Flip-flop"
+--the part of the "inverter" and the "D Flip-Flop" were made  
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
