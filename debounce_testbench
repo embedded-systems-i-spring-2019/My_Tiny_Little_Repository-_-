@@ -1,3 +1,5 @@
+--Remember that the key about test benches is the "WAIT" manual command
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
@@ -15,122 +17,96 @@ entity debounce_tb is
 end debounce_tb;
 
 architecture db_tb of debounce_tb is
-
---declare debounce component------------------------------------
-component debounce
-    Port (clk: in std_logic;
-        btn: in std_logic;
-        dbnc: out std_logic );
-end component;
---end component-------------------------------------------------
+    
+        signal clk: std_logic := '0';
+        signal btn: std_logic := '0';       --This is the input
+        signal dbnc: std_logic := '0';       --Remember this is the output
 
 
---create intermediate signals and initialize them
-signal clk: std_logic := '0';
-signal btn: std_logic := '0';
-signal dbnc: std_logic := '0';
+            component debounce   --This just calls all of "debounce" using its entity-component values
+                Port (clk: in std_logic;
+                    btn: in std_logic;
+                    dbnc: out std_logic );
+            end component;
+            
 
-
-begin
-
---set signals from design to signals in testbench
-dut: debounce port map(clk => clk,
-                       btn => btn,
-                       dbnc => dbnc);
+                begin             
+                      dut: debounce port map  --Here we just puts the component-entity values of "debounce" into the temporary values of the "testbench"
+                                (clk => clk,
+                                 btn => btn,
+                                 dbnc => dbnc);
+                                       
                        
-                       
---declare process for the clock---------------------------------------
-clk_process:  process
-    begin
-
---8ns clock cycle = 125MHZ
-
---set high for half the period
-      clk <= '1';
-      wait for 4 ns;
---set low for half      
-      clk <= '0';
-      wait for 4 ns;
+                     clk_process:  process      --This is just for the clock
+                                         begin       --Here we just simulat ethe clock part. We start the clock that has a freq of 125Mhz, which gives it a period of 8ns.
+                                               clk <= '1';   --set high 
+                                               wait for 4 ns;  --for half a period
+                                            
+                                               clk <= '0';       --set low
+                                               wait for 4 ns;   -- for half   
+                                    end process;
+                             
   
-  end process;
- --end process--------------------------------------------------------- 
-  
-  
- --declare process for thr button
- btn_process: process 
-    begin
-    
-    --initial wait
-    btn <= '0';
-    wait for 5ms;
-    
-   --turn the button on and off multiple times to simulate bounce
-  
-    btn <= '1';
-    wait for 1000us;
-    btn <= '0';
-    wait for 1000us;
-    btn <= '1';
-    wait for 1000us;
-    btn <= '0';
-    wait for 1000us;
-    
- 
-    
-    --keep on for 21ms (to make it noticable)
-    btn <= '1';
-    wait for 21ms;
-    
-    --turn off and on to simulate bounce
-    btn <= '0';
-    wait for 1000us;
-    btn <= '1';
-    wait for 1000us;
-    btn <= '0';
-    wait for 1000us;
-    btn <= '1';
-    wait for 1000us;
-
-    
-    
-   --initial wait
-    btn <= '0';
-    wait for 5ms;
-    
-   --turn the button on and off multiple times to simulate bounce
-  
-    btn <= '1';
-    wait for 1000us;
-    btn <= '0';
-    wait for 1000us;
-    btn <= '1';
-    wait for 1000us;
-    btn <= '0';
-    wait for 1000us;
-    
- 
-    
-    --keep on for 30ms
-    btn <= '1';
-    wait for 30ms;
-    
-    --turn off and on to simulate bounce
-    btn <= '0';
-    wait for 1000us;
-    btn <= '1';
-    wait for 1000us;
-    btn <= '0';
-    wait for 1000us;
-    btn <= '1';
-    wait for 1000us;
-    
-    
-    --no more button presses
-    btn <= '0';
-    wait;
-    
-        
-    end process;
+                     btn_process:  process            -- In this part we manually simulate button inputs during the given times
+                                          begin     
+                                               --Case#1 , the button is off for the time duration given  below
+                                                btn <= '0'; --initial wait
+                                                wait for 5ms;
+                                                
+                                              --Case #2, turn the button on and off multiple times to simulate bounce
+                                                btn <= '1';
+                                                wait for 1000us; 
+                                                btn <= '0';             --Then here the button is off for the next "1 million" nano seconds
+                                                wait for 1000us;
+                                                btn <= '1';
+                                                wait for 1000us;
+                                                btn <= '0';
+                                                wait for 1000us;
+                                                
+                                              --Case #2, turn the button on and off multiple times to simulate bounce     
+                                                btn <= '1';            --Make button high for 21ms to notice any difference
+                                                wait for 21ms;          
+                                                    
+                                                btn <= '0';
+                                                wait for 1000us;
+                                                btn <= '1';
+                                                wait for 1000us;
+                                                btn <= '0';
+                                                wait for 1000us;
+                                                btn <= '1';
+                                                wait for 1000us;
+                                            
+                                              --Case #3. we ,make the button be off for a little longer
+                                                btn <= '0';
+                                                wait for 5ms;
+                                                
+                                                btn <= '1';
+                                                wait for 1000us;
+                                                btn <= '0';
+                                                wait for 1000us;
+                                                btn <= '1';
+                                                wait for 1000us;
+                                                btn <= '0';
+                                                wait for 1000us;
+                                                
+                                               --Case #4, Here the button is high for longer
+                                                btn <= '1';
+                                                wait for 30ms;
+                                               --This is where the button bounces
+                                                btn <= '0';
+                                                wait for 1000us;
+                                                btn <= '1';
+                                                wait for 1000us;
+                                                btn <= '0';
+                                                wait for 1000us;
+                                                btn <= '1';
+                                                wait for 1000us;
+                                                
+                                               --This is where the button presses stop
+                                                btn <= '0';
+                                                wait;       
+                                                    
+                                    end process;
 
 
 end db_tb;
