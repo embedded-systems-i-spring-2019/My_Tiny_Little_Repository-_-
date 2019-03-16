@@ -49,33 +49,39 @@ architecture my_ct of counter_top is
 
                 begin
      
-                        U1: debounce port map(btn => btn(0),
+                        U1: debounce port map
+                                              (btn => btn(0),        
                                               clk => clk,
                                               dbnc => U1_out);
                                               
-                        U2: debounce port map(btn => btn(1),
+                        U2: debounce port map
+                                              (btn => btn(1),
                                               clk => clk,
                                               dbnc => U2_out);
                                               
-                        U3: debounce port map(btn => btn(2),
+                        U3: debounce port map
+                                              (btn => btn(2),
                                               clk => clk,
                                               dbnc => U3_out);
                         
-                        U4: debounce port map(btn => btn(3),
+                        U4: debounce port map
+                                              (btn => btn(3),
                                               clk => clk,
                                               dbnc => U4_out);
                                               
-                        U5: clock_div port map(clk => clk,
+                        U5: clock_div port map
+                                              (clk => clk,
                                                div => U5_out);
                                                
-                        U6: fancy_counter port map(clk => clk,
-                                                   clk_en => U5_out,
-                                                   dir => sw(0),
-                                                   en => U2_out,
-                                                   ld => U4_out,
-                                                   rst => U1_out,
-                                                   updn => U3_out,
-                                                   val => sw,
-                                                   cnt => led);
+                        U6: fancy_counter port map
+                                             (clk => clk,
+                                             clk_en => U5_out,
+                                             dir => sw(0),
+                                             en => U2_out,
+                                             ld => U4_out,
+                                             rst => U1_out,
+                                             updn => U3_out,
+                                             val => sw,
+                                             cnt => led);
                                                           
 end my_ct;
