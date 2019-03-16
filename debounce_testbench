@@ -1,4 +1,5 @@
 --Remember that the key about test benches is the "WAIT" manual command
+--Remember that for the manual input/time simulation of debounce, we can use less time lines simulations.
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
