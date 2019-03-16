@@ -49,13 +49,13 @@ architecture my_ct of counter_top is
 
                 begin
      
-                        U1: debounce port map
-                                              (btn => btn(0),        
+                        U1: debounce port map          --This is for the 0th bit of the button
+                                              (btn => btn(0),        --here we assign the entity "btn" of counter_top to temporary "btn"'s 0th bit of "component-debounce"
                                               clk => clk,
                                               dbnc => U1_out);
                                               
                         U2: debounce port map
-                                              (btn => btn(1),
+                                              (btn => btn(1),        --here we assign the entity "btn" of counter_top to temporary "btn"'s 1th bit of "component-debounce"
                                               clk => clk,
                                               dbnc => U2_out);
                                               
