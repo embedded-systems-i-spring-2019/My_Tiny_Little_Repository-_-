@@ -47,8 +47,8 @@ architecture my_ct of counter_top is
 
          ------------------------------------------------------
 
-                begin
-     
+                begin       --Notice that each of these ports represent each bit of the main inputs of the main components
+                     
                         U1: debounce port map          --This is for the 0th bit of the button
                                               (btn => btn(0),        --here we assign the entity "btn" of counter_top to temporary "btn"'s 0th bit of "component-debounce"
                                               clk => clk,
@@ -69,13 +69,13 @@ architecture my_ct of counter_top is
                                               clk => clk,
                                               dbnc => U4_out);
                                               
-                        U5: clock_div port map
+                        U5: clock_div port map              --This is for Clock.div only
                                               (clk => clk,
                                                div => U5_out);
                                                
-                        U6: fancy_counter port map
+                        U6: fancy_counter port map          --This is for fancy.counter only
                                              (clk => clk,
-                                             clk_en => U5_out,
+                                             clk_en => U5_out, --Notice this one has the temporary signal "U5_out"
                                              dir => sw(0),
                                              en => U2_out,
                                              ld => U4_out,
