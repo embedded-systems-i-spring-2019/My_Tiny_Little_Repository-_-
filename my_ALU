@@ -33,19 +33,23 @@ architecture Behavioral of my_alu is
                                 
                                 case Opcode is  
                                 
-                                when "0000" => alu_out <= inputA + inputB;      --Notice 
+                                when "0000" => alu_out <= inputA + inputB;      --This is the first output. We created a 4-bit artifical number 
                                 
-                                when "0001" => alu_out <= inputA - inputB; --substaction
-                                when "0010" => alu_out <= inputA + "0001"; -- A + 1
-                                when "0011" => alu_out <= inputA - "0001"; -- A - 1
-                                when "0100" => alu_out <= "0000" - inputA; -- 0 - A
-                                when "0101" => -- A > B comparison
-                                    if(A > B) then
-                                        alu_out <= "0001"; -- 1 if true
-                                    else
-                                        alu_out <= "0000"; -- 0 otherwise
-                                    end if;
-                                --Note: sll, srl, sra are deemed as incorrect
+                                when "0001" => alu_out <= inputA - inputB;      --Second output
+                                
+                                when "0010" => alu_out <= inputA + "0001";              -- A + 1
+                                
+                                when "0011" => alu_out <= inputA - "0001";              -- A - 1
+                                
+                                when "0100" => alu_out <= "0000" - inputA;               -- Subtracts "A" from 0
+                                
+                                when "0101" => -- A > B comparison         --Note: sll, srl, sra are deemed as incorrect
+                                            if(A > B) then                        --Checks if "A" is greater than "B"
+                                                alu_out <= "0001";                -- Outputs an output of "1"
+                                            else
+                                                alu_out <= "0000";                -- Outputs an output of "0"
+                                            end if;
+                                            
                                 -- they have been replaced by functions
                                 -- unsigned performs logical shift
                                 -- signed performs arithmetic shifts
