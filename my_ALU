@@ -20,7 +20,7 @@ end my_alu;
 
 architecture Behavioral of my_alu is
 
-        signal inputA, inputB, alu_out : unsigned(3 downto 0);  --Here we create three temporary-inputs (intermediate signals) for the three enitity-inputs
+        signal inputA, inputB, alu_out : unsigned(3 downto 0);  --Here we create three temporaries (intermediate signals). Remember that when dealing with "temporary" signals we don't need to label them as "input" or "output"
         
             begin
               
@@ -42,9 +42,9 @@ architecture Behavioral of my_alu is
 
                                         when "0101" => -- A > B comparison         --Note: sll, srl, sra are deemed as incorrect
                                                     if(A > B) then                        --Checks if "A" is greater than "B"
-                                                        alu_out <= "0001";                -- Outputs an output of "1"
+                                                        alu_out <= "0001";                -- Outputs an output of "1" in binary form
                                                     else
-                                                        alu_out <= "0000";                -- Outputs an output of "0"
+                                                        alu_out <= "0000";                -- Outputs an output of "0" in binary form
                                                     end if;
 
 
@@ -71,7 +71,7 @@ architecture Behavioral of my_alu is
 
                    end process;
     
-                   output <= std_logic_vector(alu_out);
+                   output <= std_logic_vector(alu_out);         --This is the line just above  except that we put it outside the "Behavioral process"
 
            
 end Behavioral;
