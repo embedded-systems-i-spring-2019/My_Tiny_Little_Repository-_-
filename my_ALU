@@ -36,9 +36,9 @@ architecture Behavioral of my_alu is
                                         when "0000" => alu_out <= inputA + inputB;      --This is the first output. We created a 4-bit artifical number 
                                         when "0001" => alu_out <= inputA - inputB;      --Notice in this case the Entity "opcode" is "0001". Also this subtraction
 
-                                        when "0010" => alu_out <= inputA + "0001";      -- A + 1
-                                        when "0011" => alu_out <= inputA - "0001";      -- A - 1
-                                        when "0100" => alu_out <= "0000" - inputA;      -- Subtracts "A" from 0
+                                        when "0010" => alu_out <= inputA + "0001";       -- Notice that in this case we add a "1", but, it is not in integer form, it is in binary form
+                                        when "0011" => alu_out <= inputA - "0001";      -- We add a "1" here in binary form as well
+                                        when "0100" => alu_out <= "0000" - inputA;     -- Subtracts "A" from 0. The "0" is in binary form
 
                                         when "0101" => -- A > B comparison         --Note: sll, srl, sra are deemed as incorrect
                                                     if(A > B) then                        --Checks if "A" is greater than "B"
