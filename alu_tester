@@ -43,34 +43,33 @@ architecture Behavioral of alu_tester is         --We will use structural behavi
 
             begin                   --portmap
 
-                    process(clk)              --Here we make the debounced button
-                
+                    process(clk)              --This is the process for making the switches work
                         begin
-                        --on rising edge clock
-                        if(rising_edge(clk)) then
-                        --declare respective loads
-                            --load opcode
-                            if(db_btn(2) = '1') then
-                                tempOP <= sw;            
+                      
+                        if(rising_edge(clk)) then           --on rising edge clock 
+                                   
+                            if(db_btn(2) = '1') then         --check if logic true then, declare respective loads
+                                tempOP <= sw;               --load opcode  
+                            end if;
                             
-                            end if;
-                            --loadA
-                            if(db_btn(1) = '1') then
-                                tempA <= sw;
-                            --report "in A";
+                            
+                            if(db_btn(1) = '1') then          --loadA
+                                tempA <= sw;                 --report "in A";
                            end if;
-                            --loadB    
-                            if(db_btn(0) = '1') then
-                                tempB <= sw;
-                            --report "in B";
+                           
+                           
+                            if(db_btn(0) = '1') then         --loadB    
+                                tempB <= sw;                    --report "in B";
                             end if;
-                            --reset values    
-                            if(db_btn(3) = '1') then
-                                tempA <= "0000";
+                            
+                            
+                            if(db_btn(3) = '1') then             --reset values   
+                                tempA <= "0000";                --This just sets all the inputs to "0"
                                 tempB <= "0000";
                                 tempOP <= "0000";
                             end if;
-                          end if;
+                            
+                         end if;
                         
                    end process;
                    
